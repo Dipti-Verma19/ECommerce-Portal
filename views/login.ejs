@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+
+<body>
+    <div class="container mt-5">
+        <% if(success !='' ){ %>
+            <div class="alert alert-warning" role="alert">
+                <%= success %>
+            </div>
+            <% } %>
+                <div class="row">
+                    <div class="col-md-6 offset-md-3">
+                        <div class="card">
+                            <div class="card-header">
+                                Login
+                            </div>
+                            <div class="card-body">
+                                <form method="post" action="/login">
+                                    <div class="form-group">
+                                        <label for="username">Username:</label>
+                                        <input type="text" class="form-control" name="username" />
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="password">Password:</label>
+                                        <input type="password" class="form-control" name="password" />
+                                    </div>
+                                    <div style=" display: flex ; justify-content: space-between;">
+                                        <a href="/forgetpass">Forget Password? </a>
+                                        <a href="/admin">Login As Admin ? </a>
+                                    </div>
+                                    <br>
+                                    <input type="submit" class="btn btn-primary" value="Submit" />
+                                    <br><br>
+                                    <p>Don't have a account ? <a href="/signup"> Signup</a></p>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"
+        integrity="sha384-hyDFV7pwkzDNGYifukPmnzlnZltQ33vw/u5MBstPrQzz5C5n5yq3P/zwIhi97nQB"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+
+</html>
