@@ -11,109 +11,177 @@
         integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
         crossorigin="anonymous"></script>
     <title>cart</title>
+    <style>
+        body {
+            background-color: plum;
+        }
+
+        .card {
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0 0, 0.2);
+            margin-bottom: 30px;
+            height: 100%;
+        }
+
+        .card-title {
+            font-size: 20px;
+            margin-bottom: 0;
+        }
+
+        .card-text p {
+            margin-bottom: 0;
+        }
+
+        .col-md-2 {
+            flex: 0 0 20%;
+            max-width: 20%;
+        }
+
+        .button-row {
+            display: flex;
+            justify-content: space-around;
+            padding: 16px;
+        }
+
+        .button {
+            padding: 8px 16px;
+            margin-left: 5px;
+            background-color: pink;
+            border: white;
+            font-size: x-small;
+            border-radius: 4px;
+            box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+        }
+
+        .button:hover {
+            background-color: black;
+            color: white;
+        }
+    </style>
 </head>
 
 <body>
     <%- include("partials/navbar.ejs" , { user : user}) %>
-        <div style="display: flex ; justify-content: flex-end;">
-            <button style="margin: auto;"><a href="/home" style="text-decoration: none; color: black;">Back to
-                    Home</a></button>
+        <div style="display: flex ; justify-content: left;">
+            <a href="/home"><button class="button" style="margin: 1rem 1rem 0rem 2rem;">Back to
+                    Home</button></a>
         </div>
         <br>
         <div class="container" id="container">
-            <% if(cart.length > 0 ) { %>
-                <div class="row col-sm">
-                    <% for(let i=0 ; i < cart.length ; i++) { %>
-                        <div class="col-sm-2 mb-3 d-flex align-items-stretch">
-                            <div class="card">
-                                <img class="card-img-top img-fluid" src="<%=cart[i].image %>"
-                                    style=" width:50% ; height: 50%;" alt="Card image cap">
-                                <div class="card-body">
-                                    <h5 class="card-title">
-                                        <%=cart[i].name %>
-                                    </h5>
-                                    <p>
-                                        Price - $<%=cart[i].price %>
-                                    </p>
-                                    <div style="justify-content: space-around;" id="<%=cart[i].id %>">
-                                        <button class="plus">+</button>
-                                        <button class="minus">-</button>
-                                    </div>
-                                    <p>Quantity : <%=cart[i].quantity %>
-                                    </p>
-                                    <div style="justify-content: space-around;">
-                                        <button type="button" data-bs-toggle="modal"
-                                            data-bs-target="#exampleModal<%=cart[i].id %>">View
-                                            Details</button>
-                                        <button type="button"><a href="/delete?id=<%=cart[i].id %>"
-                                                style="text-decoration: none; color: black;">Delete</a></button>
-                                    </div>
-                                    <!-- popup -->
-                                    <div class="modal fade" id="exampleModal<%=cart[i].id %>" tabindex="-1"
-                                        aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                        <div class="modal-dialog">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h5 class="modal-title" id="exampleModalLabel">Details
-                                                    </h5>
-                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                        aria-label="Close"></button>
-                                                </div>
-                                                <div class="modal-body">
-                                                    <img class="card-img-top img-fluid" src="<%=cart[i].image %>"
-                                                        style=" width:50% ; height: 50%;" alt="Card image cap">
-                                                    <h5 class="card-title">
-                                                        <%=cart[i].name %>
-                                                    </h5>
-                                                    <p>
-                                                        Price - $<%=cart[i].price %>
-                                                    </p>
-                                                    <p>
-                                                        Description <br>
-                                                        <%= cart[i].details %>
-                                                    </p>
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <button type="button" class="btn btn-secondary"
-                                                        data-bs-dismiss="modal">Close</button>
+            <% var total=0 %>
+                <% if(cart.length> 0 ) { %>
+                    <div class="row col-sm">
+                        <% for(let i=0 ; i < cart.length ; i++) { %>
+                            <div class="col-sm-2  d-flex ">
+                                <div class="card shadow" style="padding-top:3%">
+                                    <img class="img-fluid" src="<%=cart[i].image %>" style="height:150px;width:100%;"
+                                        alt="Card image cap">
+                                    <div class="card-body">
+                                        <h5 class="card-title">
+                                            <%=cart[i].name %>
+                                        </h5>
+                                        <p>
+                                            Price - $<%=cart[i].price %>
+                                        </p>
+                                        <div style="justify-content: space-around;" id="<%=cart[i].id %>">
+                                            <button class="button" id="plus<%=cart[i].id %>" onclick=plus()>+</button>
+                                            <button class="button" id="minus<%=cart[i].id %>" onclick=minus()>-</button>
+                                        </div>
+                                        <p>Quantity :
+                                            <label id="label<%=cart[i].id %>">
+                                                <%=cart[i].quantity %>
+                                            </label>
+
+                                        </p>
+                                        <p id="<%=cart[i].id %>">Stock : <%=cart[i].stock %>
+                                        </p>
+                                        <div style="justify-content: space-around;">
+                                            <button type="button" class="button" data-bs-toggle="modal"
+                                                data-bs-target="#exampleModal<%=cart[i].id %>">View
+                                                Details</button>
+                                            <a href="/delete?id=<%=cart[i].id %>"><button type="button" class="button">
+                                                    Delete</button></a>
+                                        </div>
+                                        <!-- popup -->
+                                        <div class="modal fade" id="exampleModal<%=cart[i].id %>" tabindex="-1"
+                                            aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="exampleModalLabel">Details
+                                                        </h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                            aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <img class="card-img-top img-fluid" src="<%=cart[i].image %>"
+                                                            style=" width:50% ; height: 50%;" alt="Card image cap">
+                                                        <h5 class="card-title">
+                                                            <%=cart[i].name %>
+                                                        </h5>
+                                                        <p>
+                                                            Price - $<%=cart[i].price %>
+                                                        </p>
+                                                        <p>
+                                                            Description <br>
+                                                            <%= cart[i].details %>
+                                                        </p>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary"
+                                                            data-bs-dismiss="modal">Close</button>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <% } %>
-                </div>
-
-                <% }else{ %>
-                    <div>
-                        <h3>
-                            <%= msg %>
-                        </h3>
+                            <% total +=cart[i].quantity * cart[i].price %>
+                                <% } %>
                     </div>
-                    <%} %>
-        </div>
 
+                    <% }else{ %>
+                        <div>
+                            <h3>
+                                <%= msg %>
+                            </h3>
+                        </div>
+                        <%} %>
+                            <div class="fixed-bottom" style="justify-content: right; margin: 15px;">
+                                <div>
+                                    <h3>
+                                        Total - <%= total %>
+                                    </h3>
+                                    <a href="/orderform?total=<%=total%>"><button class="button">Place
+                                            Order
+                                        </button></a>
+                                </div>
+                            </div>
+        </div>
 </body>
 <script>
-    let plus = document.querySelectorAll(".plus")
-    let minus = document.querySelectorAll(".minus")
-
-    plus.addEventListener("click", (event) => {
+    function plus() {
+        quantid = "label" + event.target.parentNode.id;
+        let quan = document.getElementById(quantid);
+        let plus1 = parseInt(quan.innerText) + 1;
+        quan.innerHTML = plus1;
         let x = new XMLHttpRequest();
-        console.log(event.target.parentNode.id);
         x.open("post", "/pluscart", true);
         x.setRequestHeader("Content-type", "application/json")
         x.send(JSON.stringify({ id: event.target.parentNode.id }))
-    })
-    minus.addEventListener("click", (event) => {
-        console.log(event.target.parentNode.id);
+    }
+    function minus() {
+        quantid = "label" + event.target.parentNode.id;
+        let quan = document.getElementById(quantid);
+        let minus1 = parseInt(quan.innerText) - 1;
+        quan.innerHTML = minus1;
         let x = new XMLHttpRequest();
         x.open("post", "/minuscart", true);
         x.setRequestHeader("Content-type", "application/json")
         x.send(JSON.stringify({ id: event.target.parentNode.id }))
-    })
+    }
 </script>
 
 

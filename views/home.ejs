@@ -10,85 +10,146 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
         crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <title>Home</title>
+    <style>
+        body {
+            background-color: plum;
+        }
+
+        .card {
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0 0, 0.2);
+            margin-bottom: 30px;
+            height: 100%;
+        }
+
+        .card-title {
+            font-size: 20px;
+            margin-bottom: 0;
+        }
+
+        .card-text p {
+            margin-bottom: 0;
+        }
+
+        .row {
+            display: flex;
+            justify-content: center;
+        }
+
+        .col-md-2 {
+            flex: 0 0 20%;
+            max-width: 20%;
+        }
+
+        .button-row {
+            display: flex;
+            justify-content: space-around;
+            padding: 16px;
+        }
+
+        .button {
+            padding: 8px 16px;
+            margin-left: 5px;
+            background-color: pink;
+            border: white;
+            font-size: x-small;
+            border-radius: 4px;
+            box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+        }
+
+        .button:hover {
+            background-color: black;
+            color: white;
+        }
+    </style>
 </head>
 
 <body>
     <%- include("partials/navbar.ejs" , { user : user}) %>
-        <div style="display : flex; justify-content: flex-end;">
-            <h1>Welcome</h1>
-            <button style="margin: auto;"><a href="/cart" style="text-decoration: none; color: black;">My
-                    Cart</a></button>
-        </div>
-
-        <div class="container">
+        <div class="container mt-5">
             <div class="row" id=cardcontainer>
-                <% for(let i=parseInt(count) ; i < parseInt(count + 5) ; i++) { %>
-                    <div class="col-lg-2 mb-3 d-flex align-items-stretch">
-                        <div class="card">
-                            <img class="card-img-top img-fluid" src="<%=product[i].image %>"
-                                style=" width:90% ; height: 50%;" alt="Card image cap">
-                            <div class="card-body">
-                                <h5 class="card-title">
-                                    <%=product[i].name %>
-                                </h5>
-                                <div style="justify-content: space-around;">
-                                    <button type="button" data-bs-toggle="modal"
-                                        data-bs-target="#exampleModal<%=product[i].id %>">View
-                                        Details</button>
-                                    <button type="button" onclick="alert()"><a href="/addtocart?id=<%=product[i].id %>"
-                                            style="text-decoration: none; color: black;">Add to Cart</a>
-                                    </button>
-                                </div>
-                                <!-- popup -->
-                                <div class="modal fade" id="exampleModal<%=product[i].id %>" tabindex="-1"
-                                    aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                    <div class="modal-dialog">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title" id="exampleModalLabel">Details
-                                                </h5>
-                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                    aria-label="Close"></button>
-                                            </div>
-                                            <div class="modal-body">
-                                                <img class="card-img-top img-fluid" src="<%=product[i].pimage %>"
-                                                    style=" width:50% ; height: 50%;" alt="Card image cap">
-                                                <h5 class="card-title">
-                                                    <%=product[i].name %>
-                                                </h5>
-                                                <p>
-                                                    Price - $<%=product[i].price %>
-                                                </p>
-                                                <p>
-                                                    Description <br>
-                                                    <%=product[i].details %>
-                                                </p>
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-secondary"
-                                                    data-bs-dismiss="modal">Close</button>
+                <% if( count> 0){ %>
+                    <% for(let i=0 ; i < count ; i++) { %>
+                        <div class="col-md-2 md-3 d-flex align-items-stretch ">
+                            <div class="card shadow" style="padding-top:3%">
+                                <img class="img-fluid" src="<%=product[i].image %>" alt="Card image cap"
+                                    style="height:150px;width:100%;">
+                                <div class="card-body">
+                                    <h5 class="card-title">
+                                        <%=product[i].name %>
+                                    </h5>
+                                    <div class="class-text">
+                                        <div class="button-row">
+                                            <button class="button" type="button" data-bs-toggle="modal"
+                                                data-bs-target="#exampleModal<%=product[i].id %>">View
+                                                Details</button>
+                                            <a href="/addtocart?id=<%=product[i].id %>"><button class="button"
+                                                    type="button" onclick="myfunc()">Add to Cart
+                                                </button></a>
+                                        </div>
+                                    </div>
+                                    <!-- popup -->
+                                    <div class="modal fade" id="exampleModal<%=product[i].id %>" tabindex="-1"
+                                        aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="exampleModalLabel">Details
+                                                    </h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                        aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <img class="card-img-top img-fluid" src="<%=product[i].image %>"
+                                                        style=" width:50% ; height: 50%;" alt="Card image cap">
+                                                    <h5 class="card-title">
+                                                        <%=product[i].name %>
+                                                    </h5>
+                                                    <p>
+                                                        Price - $<%=product[i].price %>
+                                                    </p>
+                                                    <p>
+                                                        Description <br>
+                                                        <%=product[i].details %>
+                                                    </p>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary"
+                                                        data-bs-dismiss="modal">Close</button>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <% } %>
+                        <% } %>
             </div>
         </div>
 
         <br>
         <div style=" display: flex; justify-content: center;">
-            <button id="loadmore"><a href="/load" style="text-decoration: none; color: black; ">Load
-                    More
-                    Products</a></button>
+            <a href="/load"><button class="button" style="font-size: medium;" id="loadmore">Load More
+                    Products</button></a>
         </div>
-        </div>
+        <% } else{ %>
+            <div style="display: flex; justify-content: center;">
+                <div style="text-align: center;">
+                    <h3>
+                        <%= msg %>
+                    </h3>
+                    <a href="/home"> Go To Frist Page</a>
+                    <% } %>
+                </div>
+            </div>
 </body>
 <script>
-
+    function myfunc() {
+        alert("Added to the Cart !!")
+    }
 </script>
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
     integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"

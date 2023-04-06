@@ -3,7 +3,7 @@ const mailjet = require('node-mailjet').apiConnect(
     "9c0a4887009e683d526912e8d5c297f2"
 )
 
-module.exports = function (email, token, callback) {
+module.exports = function (email, password, callback) {
     const request = mailjet.post('send', { version: 'v3.1' }).request({
         Messages: [
             {
@@ -17,9 +17,9 @@ module.exports = function (email, token, callback) {
                         Name: 'No Need',
                     },
                 ],
-                Subject: 'Verify your Account',
-                TextPart: 'To access your account you need to verify your email.',
-                HTMLPart: '<h3>Forget Password</h3><a href= "http://localhost:3000/verifymail/?token="+token >Click to Verify</a>!<br />Login to you account after verifying!',
+                Subject: 'Get Your Password',
+                TextPart: 'Password you provided while registering in our website',
+                HTMLPart: `Password you provided while registering in our website <br>Your Password : '${password}'`,
             },
         ],
     })

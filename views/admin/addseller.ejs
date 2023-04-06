@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Add Seller</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+</head>
+
+<body>
+    <%- include('../partials/adminnavbar.ejs', { user : user}) %>
+        <div class="container mt-5">
+            <div class="row">
+                <div class="col-md-6 offset-md-3">
+                    <div class="card">
+                        <div class="card-header">
+                            Add Seller
+                        </div>
+                        <div class="card-body">
+                            <form method="post" action="/admin/addseller">
+                                <div class="form-group">
+                                    <label for="seller-name">Name:</label>
+                                    <input type="text" class="form-control" id="sname" name="sname"
+                                        placeholder="Enter seller name">
+                                </div>
+                                <div class="form-group">
+                                    <label for="seller-email">Email:</label>
+                                    <input type="email" class="form-control" id="semail" name="semail"
+                                        placeholder="Enter seller email">
+                                </div>
+                                <div class="form-group">
+                                    <label for="seller-address">Password:</label>
+                                    <input type="password" class="form-control" id="spass" name="spass"
+                                        placeholder="Enter seller password">
+                                </div>
+                                <button type="submit" class="btn btn-primary">Add Seller</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+</body>
+
+</html>

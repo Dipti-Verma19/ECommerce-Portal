@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Signup</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+
+<body>
+
+    <div class="container mt-5">
+        <% if(err !='' ){ %>
+            <div class="alert alert-warning" role="alert">
+                <%= err %>
+            </div>
+            <% } %>
+                <div class="row">
+                    <div class="col-md-6 offset-md-3">
+                        <div class="card">
+                            <div class="card-header">
+                                Forgot Password
+                            </div>
+                            <div class="card-body">
+                                <form method="post" action="/forgetpass">
+                                    <div class="form-group">
+                                        <label for="name">Enter Registerd Username:</label>
+                                        <input type="text" class="form-control" name="username"
+                                            placeholder="Enter UserName">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="email">Enter Registerd Email:</label>
+                                        <input type="email" class="form-control" name="email" placeholder="Enter email">
+                                    </div>
+                                    <input type="submit" class="btn btn-primary" value="Submit" />
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+    </div>
+    </div>
+</body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+</html>

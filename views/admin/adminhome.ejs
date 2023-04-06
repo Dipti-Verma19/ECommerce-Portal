@@ -11,47 +11,87 @@
         integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
         crossorigin="anonymous"></script>
     <title>Home</title>
+    <style>
+        body {
+            background-color: cornsilk;
+        }
+
+        .card {
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0 0, 0.2);
+            margin-bottom: 30px;
+            height: 100%;
+        }
+
+        .card-title {
+            font-size: 20px;
+            margin-bottom: 0;
+        }
+
+        .card-text p {
+            margin-bottom: 0;
+        }
+
+        .button-row {
+            display: flex;
+            justify-content: space-around;
+            padding: 16px;
+        }
+
+        .button {
+            padding: 8px 16px;
+            margin-left: 5px;
+            background-color: burlywood;
+            border: white;
+            font-size: small;
+            border-radius: 4px;
+            box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+        }
+
+        .button:hover {
+            background-color: gray;
+            color: black;
+        }
+    </style>
 </head>
 
 <body>
     <%- include('../partials/adminnavbar.ejs', { user : user}) %>
-        <div style="display : flex; ">
-            <h1>Welcome</h1>
-        </div>
-        <div class="container">
+        <div class="container mt-4">
             <div class="row" id=cardcontainer>
                 <% for(let i=0 ; i < product.length ; i++) { %>
                     <div class="col-lg-2 mb-3 d-flex align-items-stretch">
-                        <div class="card">
+                        <div class="card shadow" style="padding-top:3%">
                             <img class="card-img-top img-fluid" src="<%=product[i].image %>"
-                                style=" width:70% ; height: 50%;" alt="Card image cap">
+                                style="height:150px;width:100%;" alt="Card image cap">
                             <div class="card-body">
                                 <form method="post" action="/admin/update?id=<%=product[i].id%>">
                                     <div class="form-group">
                                         <label for="product-name">Product Name:</label>
                                         <input type="text" class="form-control" name="pname"
-                                            value="<%=product[i].name%>">
+                                            value="<%=product[i].name%>" required>
                                     </div>
                                     <div class="form-group">
                                         <label for="product-description">Product Description:</label>
-                                        <input type="text" class="form-control" name="pdescription"
-                                            value="<%=product[i].details%>" />
+                                        <input type="text" class="form-control" name="pdetails"
+                                            value="<%=product[i].details%>" required />
                                     </div>
                                     <div class="form-group">
                                         <label for="product-price">Product Price:</label>
                                         <input type="number" class="form-control" name="pprice"
-                                            value="<%=product[i].price%>">
+                                            value="<%=product[i].price%>" required>
                                     </div>
                                     <div class="form-group">
                                         <label for="product-price">Product Quantity:</label>
                                         <input type="number" class="form-control" name="pquantity"
-                                            value="<%=product[i].quantity%>">
+                                            value="<%=product[i].stock%>" required>
                                     </div>
                                     <br>
                                     <div style="justify-content: space-around;">
-                                        <button type="submit">Update</button>
-                                        <button><a href="/admin/delete?id=<%=product[i].id %>"
-                                                style="text-decoration: none; color: black;">Delete</a></button>
+                                        <button class="button" type="submit">Update</button>
+                                        <a href="/admin/delete?id=<%=product[i].id %>"><button
+                                                class="button">Delete</button></a>
                                     </div>
                                 </form>
                             </div>

@@ -9,7 +9,7 @@ async function finduser(username) {
 async function newuser(username, password, email) {
     let User = new user({
         name: username,
-        password: password,
+        pass: password,
         email: email,
         isVerifed: false,
         is_admin: false,

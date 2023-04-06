@@ -1,5 +1,5 @@
-const adminService = require('../services/adminservice')
-
+const adminService = require('../sql_services/adminservice')
+var sellerid
 const adminloginget = (req, res) => {
     res.render("adminlogin", { msg: '' })
 }
@@ -7,11 +7,13 @@ const adminloginget = (req, res) => {
 const adminloginpost = async (req, res) => {
     let { username, password } = req.body;
     let User = await adminService.LoginAdmin(username);
-    if (User && User.is_admin) {
-        const pass = password === User.password;
-        if (pass && User.is_admin) {
+    if (User && User[0].is_admin) {
+        const pass = password === User[0].password;
+        if (pass && User[0].is_admin) {
+            req.session.is_logged_in_admin = true;
             req.session.is_logged_in = true;
-            req.session.userName = User.name;
+            req.session.userName = User[0].name;
+            sellerid = User[0].id;
             res.redirect("/admin/home");
         } else {
             res.render("adminlogin", { msg: 'Password did not match!' })
@@ -22,8 +24,12 @@ const adminloginpost = async (req, res) => {
 }
 
 const adminhome = async (req, res) => {
-    let products = await adminService.allproducts();
-    res.render("adminhome", { user: req.session.userName, product: products });
+    if (req.session.is_logged_in_admin) {
+        let products = await adminService.allproducts();
+        res.render("adminhome", { user: req.session.userName, product: products });
+    } else {
+        res.redirect("/admin/");
+    }
 }
 
 const productdelete = async (req, res) => {
@@ -40,16 +46,36 @@ const update = async (req, res) => {
 }
 
 const addproductget = async (req, res) => {
-    res.render("addproduct", { user: req.session.userName })
+    if (req.session.is_logged_in_admin) {
+        res.render("addproduct", { user: req.session.userName })
+    } else {
+        res.redirect("/admin/");
+    }
 }
 
 const addproductpost = async (req, res) => {
+    var pimage = req.file.filename;
+    console.log(pimage);
     let { pname, pdetails, pprice, pquantity } = req.body;
-    let { pimage } = req.file.filename;
-    let products = await adminService.allproducts();
-    id = products.length + 1;
-    await adminService.productadd(id, pname, pdetails, pprice, pquantity, pimage);
+    //let products = await adminService.allproducts();
+    //id = products.length + 1;
+    await adminService.productadd(pname, pimage, pprice, pdetails, pquantity, sellerid);
     res.redirect("/admin/home")
+}
+
+const addsellerget = (req, res) => {
+    if (req.session.is_logged_in_admin) {
+        res.render("addseller", { user: req.session.userName })
+    } else {
+        res.redirect("/admin/");
+    }
+}
+
+const addsellerpost = async (req, res) => {
+    let { sname, semail, spass } = req.body;
+    console.log(req.body)
+    await adminService.addseller(sname, spass, semail);
+    res.redirect("/admin/home");
 }
 
 module.exports = {
@@ -59,5 +85,7 @@ module.exports = {
     productdelete,
     update,
     addproductget,
-    addproductpost
+    addproductpost,
+    addsellerget,
+    addsellerpost,
 }

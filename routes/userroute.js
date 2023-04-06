@@ -4,8 +4,10 @@ const app = express()
 
 const loginAuth = require("../middlewares/loginAuth")
 const EmailAuth = require("../middlewares/emailAuth")
+
 const usercontroller = require("../controllers/usercontroller");
 
+app.use(express.static("uploads"))
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
@@ -19,30 +21,40 @@ app.route("/login").get(usercontroller.loginget)
 app.route("/signup").get(usercontroller.signupget)
     .post(usercontroller.signuppost)
 
+app.get("/home", loginAuth /*, EmailAuth */, usercontroller.homeget)
 
-app.route("/home").get(loginAuth /*, EmailAuth */, usercontroller.homeget)
-    .post(usercontroller.homepost)
+app.get("/load", loginAuth, usercontroller.load)
 
-app.get("/load", usercontroller.load)
+app.get("/verifymail/:token", loginAuth, usercontroller.verifymail)
 
-app.get("/verifymail/:token", usercontroller.verifymail)
+app.get("/addtocart", loginAuth, usercontroller.addtocart)
 
-app.get("/addtocart", usercontroller.addtocart)
+app.get("/cart", loginAuth, usercontroller.cart)
 
-app.get("/cart", usercontroller.cart)
+app.get("/delete", loginAuth, usercontroller.cartdelete)
 
-app.get("/delete", usercontroller.cartdelete)
+app.post("/pluscart", loginAuth, usercontroller.pluscart)
 
-app.post("/pluscart", usercontroller.pluscart)
+app.post("/minuscart", loginAuth, usercontroller.minuscart)
 
-app.post("/minuscart", usercontroller.minuscart)
+app.route("/changepass").get(loginAuth, usercontroller.changepassget)
+    .post(loginAuth, usercontroller.changepasspost)
 
-app.route("/changepass").get(usercontroller.changepassget)
-    .post(usercontroller.changepasspost)
-
-//app.get('/forgetpass')
+app.route('/forgetpass').get(loginAuth, usercontroller.forgetpassget)
+    .post(loginAuth, usercontroller.forgetpasspost)
 
 app.get('/logout', usercontroller.logout)
+
+app.route("/order").get(loginAuth, usercontroller.orderpage)
+
+app.route("/orderform").get(loginAuth, usercontroller.orderget)
+    .post(usercontroller.orderpost)
+
+app.route("/orderformx").post(usercontroller.orderpost)
+
+app.get('/payment', usercontroller.payment)
+
+app.get('/success', usercontroller.paymentdone)
 
 app.get("*", function (req, res) {
     res.send("<h1>404 - Page Not Found</h1>");
